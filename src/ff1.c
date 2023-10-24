@@ -371,7 +371,11 @@ FPE_KEY* FPE_ff1_create_key(const char *key, const char *tweak, unsigned int rad
     hex2chars(tweak, t);
 
     FPE_KEY *keystruct  = (FPE_KEY *)OPENSSL_malloc(sizeof(FPE_KEY));
-    create_ff1_key(k,klen*8,t,tlen,radix,keystruct);
+    int result = create_ff1_key(k,klen*8,t,tlen,radix,keystruct);
+    if (result != 0) {
+        OPENSSL_free(keystruct);
+        return NULL;
+    }
     return keystruct;
 }
 
